@@ -3,94 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 1: The Scene</title>
+    <title>Room 1: The Investigation</title>
     <style>
-        /* This ensures the page takes up the full screen */
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #222; }
-
-        .room-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            /* Using ./ ensures it looks in the exact same folder */
-            background-image: url('./room1.png'); 
-            background-repeat: no-repeat;
-            background-position: center center;
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #111; font-family: sans-serif; }
+        
+        /* THE GAME BOARD */
+        .room-bg {
+            position: relative; width: 100vw; height: 100vh;
+            background: url('./room1.png') no-repeat center center;
             background-size: cover;
-            background-color: #333; /* Fallback color if image fails */
         }
 
-        /* INVISIBLE HOTSPOTS */
-        .hotspot { 
-            position: absolute; 
-            cursor: pointer; 
-            background: rgba(255, 255, 255, 0); /* Invisible */
-            z-index: 10;
-        }
-
-        /* DEBUG MODE: Only used when you want to see where the boxes are */
-        .show-boxes { background: rgba(255, 255, 0, 0.2) !important; border: 2px dashed yellow !important; }
-
-        /* COORDINATES: Adjust these to fit your group of people */
-        #clue-holder { top: 35%; left: 40%; width: 20%; height: 30%; } 
-        #decoy-1 { top: 20%; left: 10%; width: 15%; height: 25%; }
-        #decoy-2 { top: 50%; left: 75%; width: 15%; height: 25%; }
-
-        /* MODALS (The pop-up boxes) */
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 40px rgba(0,0,0,0.9); z-index: 100; max-width: 400px; text-align: center; font-family: sans-serif; }
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 90; }
+        /* HOTSPOTS: Change opacity to 0.0 when you are finished testing! */
+        .hotspot { position: absolute; cursor: pointer; background: rgba(255, 255, 0, 0.0); z-index: 10; border: none; }
         
-        input { padding: 12px; width: 90%; border: 1px solid #ccc; border-radius: 6px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; }
-        button { padding: 12px 20px; background: #c0392b; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        /* DEBUG CLASS: This shows the boxes when you click the button at the bottom */
+        .show-boxes { background: rgba(255, 255, 0, 0.3) !important; border: 2px dashed yellow !important; }
+
+        /* COORDINATES: Adjust these to match the people in your 'room1.png' */
+        #main-target { top: 35%; left: 40%; width: 20%; height: 35%; } 
+        #decoy-left { top: 20%; left: 5%; width: 15%; height: 30%; }
+        #decoy-right { top: 45%; left: 75%; width: 15%; height: 30%; }
+
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 450px; text-align: center; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
+        input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 6px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; text-align: center; }
+        button.action-btn { background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         
-        #dev-toggle { position: fixed; bottom: 10px; left: 10px; z-index: 1000; font-size: 10px; opacity: 0.5; }
+        #dev-tools { position: fixed; bottom: 10px; right: 10px; z-index: 1000; font-size: 10px; color: white; background: rgba(0,0,0,0.5); border: none; padding: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="room-container" id="mainRoom">
-    <div style="background: rgba(0,0,0,0.8); color: #2ecc71; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 8px; font-family: monospace; border-left: 5px solid #2ecc71; max-width: 300px;">
-        <strong>SYSTEM LOADED...</strong><br>
-        Search the team. Find the expert holding the 2026 intelligence briefing.
+<div class="room-bg">
+    <div style="background: rgba(0,0,0,0.8); color: #fff; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 8px; border-left: 5px solid #00ff41; max-width: 320px;">
+        <strong>[ACTIVE SEARCH]</strong><br>
+        Identify the person in the group who is holding the 2026 Toxicology Intelligence Brief.
     </div>
 
-    <div id="clue-holder" class="hotspot" onclick="openModal('real')"></div>
-    <div id="decoy-1" class="hotspot" onclick="openModal('decoy1')"></div>
-    <div id="decoy-2" class="hotspot" onclick="openModal('decoy2')"></div>
+    <div id="main-target" class="hotspot" onclick="openModal('real')"></div>
+    <div id="decoy-left" class="hotspot" onclick="openModal('decoy1')"></div>
+    <div id="decoy-right" class="hotspot" onclick="openModal('decoy2')"></div>
 </div>
 
-<button id="dev-toggle" onclick="toggleBoxes()">[DEV: TOGGLE BOXES]</button>
+<button id="dev-tools" onclick="toggleDebug()">[DEV: TOGGLE BOXES]</button>
 
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
 <div class="modal" id="modal-decoy1">
-    <h3>🔍 Identification: Field Agent</h3>
-    <p>"I'm working on the Naloxone distribution. You need to find the clinical specialist for the new trends data."</p>
-    <button onclick="closeAll()">Keep Searching</button>
+    <h3>🕵️ System ID: Field Liaison</h3>
+    <p>"I'm handling the Narcan training. The toxicology data is with the lead researcher. Keep searching the group."</p>
+    <button class="action-btn" onclick="closeAll()">KEEP LOOKING</button>
 </div>
 
 <div class="modal" id="modal-decoy2">
-    <h3>🔎 Identification: Data Entry</h3>
-    <p>"This report is for 2024. It's outdated. We need the 2026 briefing on synthetic sedatives."</p>
-    <button onclick="closeAll()">Keep Searching</button>
+    <h3>🕵️ System ID: Program Admin</h3>
+    <p>"I have the 2025 budget files, but not the 2026 drug trends report. Try another team member."</p>
+    <button class="action-btn" onclick="closeAll()">KEEP LOOKING</button>
 </div>
 
 <div class="modal" id="modal-real">
-    <h2 style="color: #c0392b;">📂 2026 TOXICOLOGY BRIEF</h2>
-    <p>A new threat has emerged in the illicit supply. It is a veterinary sedative 100x stronger than Xylazine. It causes extreme sedation and low heart rate.</p>
+    <h2 style="color: #e67e22;">📂 2026 TOXICOLOGY BRIEF</h2>
+    <p>A new veterinary sedative is contaminating the supply. It is <strong>100x stronger</strong> than Xylazine, causes "stone chest," and ignores Naloxone.</p>
     <hr>
-    <p><strong>MISSION:</strong> Identify the substance name to unlock the clue.</p>
-    <p style="letter-spacing: 5px; font-weight: bold; font-size: 1.3rem;">M E D E _ _ _ _ _ _ _ E</p>
+    <p><strong>MISSION:</strong> Identify the substance to unlock the word.</p>
+    <p style="font-weight: bold; letter-spacing: 4px; font-size: 1.2rem;">M E D E _ _ _ _ _ _ _ E</p>
     
-    <input type="text" id="userInput" placeholder="TYPE NAME...">
-    <button onclick="verify()">SUBMIT DATA</button>
+    <input type="text" id="userInput" placeholder="TYPE FULL NAME...">
+    <button class="action-btn" onclick="checkAnswer()">SUBMIT DATA</button>
 
-    <div id="win-msg" style="display:none; margin-top:20px; color: #27ae60;">
-        <p>✅ <strong>ANALYSIS COMPLETE.</strong></p>
-        <p>The term is <strong>Medetomidine</strong>.</p>
-        <p>Clue Word 1: <strong>VIGILANCE</strong></p>
-        <a href="room2.html" style="font-weight:bold; color: #2980b9;">PROCEED TO ROOM 2 &rarr;</a>
+    <div id="win-zone" style="display:none; margin-top: 20px; color: #27ae60;">
+        <p>✅ <strong>SUCCESS.</strong> Medetomidine identified.</p>
+        <p>Master Clue Word 1: <span style="font-size: 1.5rem; font-weight: bold;">ADAPTIVE</span></p>
+        <a href="room2.html" style="color: #2980b9; font-weight: bold;">PROCEED TO ROOM 2 &rarr;</a>
     </div>
 </div>
 
@@ -107,16 +94,16 @@
         document.getElementById('overlay').style.display = 'none';
     }
 
-    function verify() {
+    function checkAnswer() {
         const val = document.getElementById('userInput').value.toUpperCase().trim();
         if(val === 'MEDETOMIDINE') {
-            document.getElementById('win-msg').style.display = 'block';
+            document.getElementById('win-zone').style.display = 'block';
         } else {
-            alert("Access Denied: Incorrect Substance Name.");
+            alert("Substance not recognized. Hint: 12 letters, starts with MEDE.");
         }
     }
 
-    function toggleBoxes() {
+    function toggleDebug() {
         document.querySelectorAll('.hotspot').forEach(h => h.classList.toggle('show-boxes'));
     }
 </script>
