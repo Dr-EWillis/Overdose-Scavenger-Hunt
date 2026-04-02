@@ -1,38 +1,110 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calibration Mode</title>
+    <title>Room 1: The Investigation</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-        /* CHANGE THE NAME BELOW TO YOUR FILE NAME */
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+        
         .room { 
             position: relative; width: 100vw; height: 100vh; 
-            background: url(room1.png) no-repeat center center; 
+            /* This looks for the image you uploaded to your GitHub */
+            background: url('room1.png') no-repeat center center; 
             background-size: cover; 
-            cursor: crosshair;
         }
-        #coords {
-            position: absolute; top: 10px; right: 10px;
-            background: rgba(0,0,0,0.8); color: yellow;
-            padding: 15px; font-family: monospace; border: 2px solid yellow;
-            z-index: 1000; pointer-events: none;
-        }
+
+        /* HOTSPOTS: Totally invisible by default */
+        .hotspot { position: absolute; cursor: pointer; background: rgba(255, 255, 255, 0); border: none; z-index: 5; }
+
+        /* TEST MODE: This class makes boxes visible when you click the 'Dev' button */
+        .debug-mode { background: rgba(255, 255, 0, 0.3) !important; border: 2px dashed yellow !important; }
+
+        /* ADJUST THESE NUMBERS to fit your specific group of people */
+        #real-clue { top: 40%; left: 45%; width: 150px; height: 150px; } /* Target: The Lead Scientist/Tablet */
+        #decoy-1 { top: 20%; left: 10%; width: 100px; height: 100px; }   /* Target: Person on the left */
+        #decoy-2 { top: 60%; left: 80%; width: 100px; height: 100px; }   /* Target: Object on the right */
+
+        /* UI ELEMENTS */
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 450px; text-align: center; color: #333; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
+        input { padding: 12px; width: 85%; border: 2px solid #ccc; border-radius: 8px; margin: 15px 0; text-transform: uppercase; font-weight: bold; letter-spacing: 2px; }
+        button { background: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 5px; }
+        #dev-btn { position: absolute; bottom: 10px; right: 10px; opacity: 0.3; background: gray; font-size: 10px; z-index: 1000; }
     </style>
 </head>
 <body>
 
-<div id="coords">Click anywhere to get coordinates!</div>
-<div class="room" onclick="getCoords(event)"></div>
+<div class="room" id="gameRoom">
+    <div style="background: rgba(0,0,0,0.8); color: #00ff41; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #00ff41; font-family: monospace;">
+        <strong>[NETWORK_CONNECTED]</strong><br>
+        Search the scene. Identify the expert holding the 2026 Intelligence Brief.
+    </div>
+
+    <div id="real-clue" class="hotspot" onclick="showModal('real')"></div>
+    <div id="decoy-1" class="hotspot" onclick="showModal('decoy1')"></div>
+    <div id="decoy-2" class="hotspot" onclick="showModal('decoy2')"></div>
+</div>
+
+<button id="dev-btn" onclick="toggleDebug()">DEBUG: SHOW BOXES</button>
+
+<div class="overlay" id="overlay" onclick="closeModals()"></div>
+
+<div class="modal" id="modal-decoy1">
+    <h3>👥 Identification: Team Member</h3>
+    <p>"I'm focused on local outreach. The clinical data is being handled by the Lead Scientist. Check with them."</p>
+    <button onclick="closeModals()">Continue Search</button>
+</div>
+
+<div class="modal" id="modal-decoy2">
+    <h3>📋 Field Notes</h3>
+    <p>These notes discuss standard Fentanyl protocols. You need the <em>emerging</em> trends report.</p>
+    <button onclick="closeModals()">Continue Search</button>
+</div>
+
+<div class="modal" id="modal-real">
+    <h2>📂 TOP SECRET: 2026 ADULTERANT BRIEF</h2>
+    <p>Xylazine is no longer the primary threat. A newer, more potent veterinary sedative has been detected in 14 states. It is 100x stronger than Xylazine and causes "stone chest" syndrome.</p>
+    <hr>
+    <p><strong>GUESS THE SUBSTANCE:</strong></p>
+    <p style="font-size: 1.4rem; font-weight: bold; letter-spacing: 5px; color: #d9534f;">M E D E _ _ _ _ _ _ _ E</p>
+    <p style="font-size: 0.8rem; color: #666;">(Hint: 12 letters. It's the 'big brother' of Xylazine.)</p>
+    
+    <input type="text" id="answerInput" placeholder="ENTER NAME...">
+    <br>
+    <button onclick="checkAnswer()">SUBMIT TO SYSTEM</button>
+
+    <div id="success" style="display:none; margin-top:20px; color:#27ae60;">
+        <h3>✅ ACCESS GRANTED</h3>
+        <p><strong>Medetomidine</strong> confirmed. <br>Clue Word 1: <strong>VIGILANCE</strong></p>
+        <a href="room2.html" style="color:#2980b9; font-weight:bold; text-decoration:underline;">GO TO ROOM 2 &rarr;</a>
+    </div>
+</div>
 
 <script>
-    function getCoords(event) {
-        const x = Math.round((event.pageX / window.innerWidth) * 100);
-        const y = Math.round((event.pageY / window.innerHeight) * 100);
-        document.getElementById('coords').innerHTML = 
-            `TOP: ${y}% <br> LEFT: ${x}% <br><br> (Use these for your hotspots!)`;
+    function showModal(type) {
+        document.getElementById('overlay').style.display = 'block';
+        if(type === 'real') document.getElementById('modal-real').style.display = 'block';
+        if(type === 'decoy1') document.getElementById('modal-decoy1').style.display = 'block';
+        if(type === 'decoy2') document.getElementById('modal-decoy2').style.display = 'block';
+    }
+
+    function closeModals() {
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function checkAnswer() {
+        const attempt = document.getElementById('answerInput').value.toUpperCase().trim();
+        if (attempt === 'MEDETOMIDINE') {
+            document.getElementById('success').style.display = 'block';
+        } else {
+            alert("System Error: Term not recognized. Consult your 2026 Drug Trends Guide.");
+        }
+    }
+
+    function toggleDebug() {
+        document.querySelectorAll('.hotspot').forEach(h => h.classList.toggle('debug-mode'));
     }
 </script>
 
