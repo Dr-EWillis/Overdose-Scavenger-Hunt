@@ -122,36 +122,3 @@
 
 </body>
 </html>
-<script>
-    // This function finds the coordinates when you click the image
-    document.getElementById('mainRoom').onclick = function(e) {
-        // Calculate percentage based on where you clicked
-        var left = Math.round((e.pageX / window.innerWidth) * 100);
-        var top = Math.round((e.pageY / window.innerHeight) * 100);
-        
-        // Show you the numbers in a pop-up
-        alert("TOP: " + top + "% \nLEFT: " + left + "%");
-    };
-
-    /* Keep your other functions (openModal, checkAnswer, etc.) below this line */
-    function openModal(id) {
-        document.getElementById('overlay').style.display = 'block';
-        if(id === 'real') document.getElementById('modal-real').style.display = 'block';
-        if(id === 'decoy1') document.getElementById('modal-decoy1').style.display = 'block';
-        if(id === 'decoy2') document.getElementById('modal-decoy2').style.display = 'block';
-    }
-
-    function closeAll() {
-        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-        document.getElementById('overlay').style.display = 'none';
-    }
-
-    function checkAnswer() {
-        const val = document.getElementById('userInput').value.toUpperCase().trim();
-        if(val === 'MEDETOMIDINE') {
-            document.getElementById('win-msg').style.display = 'block';
-        } else {
-            alert("Analysis Failed: Substance not recognized.");
-        }
-    }
-</script>
