@@ -90,4 +90,18 @@
 
     function closeAll() {
         document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-        document.getElementById('overlay
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function checkAnswer() {
+        const val = document.getElementById('userInput').value.toUpperCase().trim();
+        if(val === 'MEDETOMIDINE') {
+            document.getElementById('win-msg').style.display = 'block';
+        } else {
+            alert("Identification failed. Substance name not recognized.");
+        }
+    }
+</script>
+
+</body>
+</html>
