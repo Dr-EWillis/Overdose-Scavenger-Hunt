@@ -3,44 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 1: The Toxicology Lab</title>
+    <title>Room 1: The Lab</title>
     <style>
+        /* 1. ENSURE THE CANVAS EXISTS */
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        html, body { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background-color: #1a1a1a; /* Dark grey so we know the page loaded */
+            overflow: hidden;
+            font-family: sans-serif;
+        }
 
         .room-container {
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('room1.jpg'); 
+            
+            /* CHANGE THIS TO .png IF YOUR FILE IS A PNG */
+            background-image: url('room1.png'); 
+            
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* INVISIBLE HOTSPOTS (Using your specific coordinates) */
+        /* 2. INVISIBLE HOTSPOTS (Using your exact numbers) */
         .hotspot { position: absolute; cursor: pointer; z-index: 10; background: rgba(255, 255, 255, 0); }
         
-        #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; }   /* Target: The Tablet */
-        #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }    /* Target: The Microscope */
-        #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }    /* Target: The Chemical Bottles */
+        #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; }   /* Tablet */
+        #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }    /* Microscope */
+        #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }    /* Bottles */
 
-        /* MODALS & UI */
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.9); z-index: 100; max-width: 450px; text-align: center; }
+        /* 3. POP-UPS & OVERLAYS */
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 400px; text-align: center; color: #333; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
-        input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; text-align: center; letter-spacing: 2px; }
+        input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; text-align: center; }
         button.action-btn { padding: 12px 25px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
-        /* MISSION OVERLAY */
-        .mission-brief { background: rgba(0,0,0,0.85); color: #00ff41; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #00ff41; font-family: monospace; max-width: 320px; z-index: 20; }
+        .mission-text { background: rgba(0,0,0,0.8); color: #00ff41; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #00ff41; font-family: monospace; max-width: 300px; z-index: 5; }
     </style>
 </head>
 <body>
 
 <div class="room-container">
-    <div class="mission-brief">
-        <strong>[NETWORK_ACTIVE]</strong><br>
-        Analyze the workstation. Search the digital data for the 2026 Toxicology Briefing.
+    <div class="mission-text">
+        <strong>[SYSTEM_READY]</strong><br>
+        Analyze the workstation. Search the image for clues in the toxicology lab.
     </div>
 
     <div id="main-clue" class="hotspot" onclick="openModal('real')"></div>
@@ -52,23 +63,22 @@
 
 <div class="modal" id="modal-decoy1">
     <h3>🔬 Microscope Check</h3>
-    <p>The sample shows evidence of synthetic analogues, but physical scanning is too slow. You need the summarized digital report to identify the substance by name.</p>
-    <button class="action-btn" onclick="closeAll()">Keep Searching</button>
+    <p>Physical analysis takes too long. We need up to date info to move forward.</p>
+    <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-decoy2">
-    <h3>🧪 Chemical Control Bottles</h3>
-    <p>These are labeled "Fentanyl Solution" and "Naloxone." They are standard controls. They do not contain the name of the new 2026 additive you are investigating.</p>
-    <button class="action-btn" onclick="closeAll()">Keep Searching</button>
+    <h3>🧪 Chemical Scan</h3>
+    <p>These are standard control solutions. They don't contain the 2026 threat name. Try a different tablet.</p>
+    <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-real">
-    <h2 style="color: #c0392b;">📊 2026 OVERDOSE DATA</h2>
-    <p>Intelligence confirms a veterinary sedative is now prevalent in the drug supply. It causes <strong>extreme bradycardia</strong> and is 100x more potent than Xylazine.</p>
+    <h2 style="color: #c0392b;">📂 2026 DATA BRIEF</h2>
+    <p>A new veterinary sedative is 100x stronger than Xylazine and ignores Naloxone.</p>
     <hr>
     <p><strong>MISSION: Identify the substance.</strong></p>
-    <p style="font-weight: bold; letter-spacing: 5px; font-size: 1.3rem;">M E D E _ _ _ _ _ _ _ E</p>
-    
+    <p style="font-weight: bold; letter-spacing: 5px; font-size: 1.3rem;">M _ _ _ _ _ _ _ _ _ _ E</p>
     <input type="text" id="userInput" placeholder="TYPE NAME...">
     <br>
     <button class="action-btn" onclick="checkAnswer()">VERIFY DATA</button>
@@ -76,7 +86,7 @@
     <div id="win-msg" style="display:none; margin-top:20px; color: #27ae60;">
         <p>✅ <strong>Data Verified: Medetomidine.</strong></p>
         <p>Master Clue Word 1: <strong>VIGILANCE</strong></p>
-        <a href="room2.html" style="font-weight:bold; color: #2980b9; text-decoration: underline;">PROCEED TO ROOM 2 &rarr;</a>
+        <a href="room2.html" style="font-weight:bold; color: #2980b9;">PROCEED TO ROOM 2 &rarr;</a>
     </div>
 </div>
 
