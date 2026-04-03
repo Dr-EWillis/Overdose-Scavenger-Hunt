@@ -94,6 +94,17 @@
 </div>
 
 <script>
+    // This function finds the coordinates when you click the image
+    document.getElementById('mainRoom').onclick = function(e) {
+        // Calculate percentage based on where you clicked
+        var left = Math.round((e.pageX / window.innerWidth) * 100);
+        var top = Math.round((e.pageY / window.innerHeight) * 100);
+        
+        // Show you the numbers in a pop-up
+        alert("TOP: " + top + "% \nLEFT: " + left + "%");
+    };
+
+    /* Keep your other functions (openModal, checkAnswer, etc.) below this line */
     function openModal(id) {
         document.getElementById('overlay').style.display = 'block';
         if(id === 'real') document.getElementById('modal-real').style.display = 'block';
@@ -111,14 +122,10 @@
         if(val === 'MEDETOMIDINE') {
             document.getElementById('win-msg').style.display = 'block';
         } else {
-            alert("Analysis Failed: Substance not recognized. Re-read the brief!");
+            alert("Analysis Failed: Substance not recognized.");
         }
     }
-
-    function toggleDebug() {
-        document.querySelectorAll('.hotspot').forEach(h => h.classList.toggle('debug-visible'));
-    }
 </script>
-
+    
 </body>
 </html>
