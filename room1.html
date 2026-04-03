@@ -6,47 +6,41 @@
     <title>Room 1: The Toxicology Lab</title>
     <style>
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #111; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
         .room-container {
             position: relative;
             width: 100vw;
             height: 100vh;
-            /* Update to match your image name on GitHub! */
-            background-image: url('room1.png'); 
+            background-image: url('room1.jpg'); 
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
         }
 
-        /* ----------------------------------------------------- */
-        /* 2. THE HOTSPOTS (Currently mapped to the placeholders) */
-        /* ----------------------------------------------------- */
-        .hotspot { position: absolute; cursor: pointer; z-index: 10; border: none; }
+        /* INVISIBLE HOTSPOTS (Using your specific coordinates) */
+        .hotspot { position: absolute; cursor: pointer; z-index: 10; background: rgba(255, 255, 255, 0); }
         
-        /* I made width/height smaller so they aren't 'wide' anymore */
-        #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; }  /* Target: The Tablet */
-        #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }   /* Target: The Microscope */
-        #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }   /* Target: The Chemical Bottles */
-
-        /* TOGGLE BOX VISIBILITY (Delete this section when game goes live) */
-        .dev-visible { background: rgba(255, 255, 0, 0.2); border: 2px dashed yellow !important; }
+        #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; }   /* Target: The Tablet */
+        #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }    /* Target: The Microscope */
+        #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }    /* Target: The Chemical Bottles */
 
         /* MODALS & UI */
         .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.9); z-index: 100; max-width: 450px; text-align: center; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
-        input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 6px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; text-align: center; }
-        button.action-btn { padding: 12px 25px; background: #2c3e50; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; text-align: center; letter-spacing: 2px; }
+        button.action-btn { padding: 12px 25px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
-        #dev-btn { position: fixed; bottom: 10px; right: 10px; opacity: 0.3; background: gray; border: none; z-index: 1000; font-size: 10px; padding: 5px; }
+        /* MISSION OVERLAY */
+        .mission-brief { background: rgba(0,0,0,0.85); color: #00ff41; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #00ff41; font-family: monospace; max-width: 320px; z-index: 20; }
     </style>
 </head>
-<body onclick="getCoordinates(event)">
+<body>
 
 <div class="room-container">
-    <div style="background: rgba(0,0,0,0.8); color: #00ff41; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 8px; border-left: 5px solid #00ff41; max-width: 320px; font-family: monospace; z-index: 20;">
-        <strong>[ACTIVE SEARCH]</strong><br>
-        Search the workstation. Locate the intel report and identify the new 2026 threat.
+    <div class="mission-brief">
+        <strong>[NETWORK_ACTIVE]</strong><br>
+        Analyze the workstation. Search the digital data for the 2026 Toxicology Briefing.
     </div>
 
     <div id="main-clue" class="hotspot" onclick="openModal('real')"></div>
@@ -54,44 +48,40 @@
     <div id="decoy-2" class="hotspot" onclick="openModal('decoy2')"></div>
 </div>
 
-<button id="dev-btn" onclick="toggleDebug()">[DEV: SHOW BOXES]</button>
-
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
 <div class="modal" id="modal-decoy1">
-    <h3>🔬 Examination: Microscope</h3>
-    <p>You see standard reagent analysis. This physical scanning process will take too long. You need the summarized digital intelligence report now.</p>
-    <button class="action-btn" onclick="closeAll()">KEEP LOOKING</button>
+    <h3>🔬 Microscope Check</h3>
+    <p>The sample shows evidence of synthetic analogues, but physical scanning is too slow. You need the summarized digital report to identify the substance by name.</p>
+    <button class="action-btn" onclick="closeAll()">Keep Searching</button>
 </div>
 
 <div class="modal" id="modal-decoy2">
-    <h3>🧪 Chemical Scan: Reagent Bottles</h3>
-    <p>These bottles (Fentanyl, Naloxone) are controls used for standard testing. They are vital tools, but they won't tell you the name of the new additive you are hunting.</p>
-    <button class="action-btn" onclick="closeAll()">KEEP LOOKING</button>
+    <h3>🧪 Chemical Control Bottles</h3>
+    <p>These are labeled "Fentanyl Solution" and "Naloxone." They are standard controls. They do not contain the name of the new 2026 additive you are investigating.</p>
+    <button class="action-btn" onclick="closeAll()">Keep Searching</button>
 </div>
 
 <div class="modal" id="modal-real">
-    <h2 style="color: #c0392b;">📊 Intelligence Briefing: DATA ANALYSIS</h2>
-    <p>The **'Overdose Data'** report confirms a dangerous trend in 2026 polysubstance fatalities. A non-opioid additive causes severe low heart rate (bradycardia) and stone chest, ignore Naloxone, and is 100x stronger than Xylazine.</p>
+    <h2 style="color: #c0392b;">📊 2026 OVERDOSE DATA</h2>
+    <p>Intelligence confirms a veterinary sedative is now prevalent in the drug supply. It causes <strong>extreme bradycardia</strong> and is 100x more potent than Xylazine.</p>
     <hr>
-    <p><strong>GUESS THE SUBSTANCE:</strong></p>
-    <p style="font-weight: bold; letter-spacing: 4px; font-size: 1.2rem;">M E D E _ _ _ _ _ _ _ E</p>
-    <p style="font-size: 0.8rem; color: #666;">(Hint: 12 letters total)</p>
+    <p><strong>MISSION: Identify the substance.</strong></p>
+    <p style="font-weight: bold; letter-spacing: 5px; font-size: 1.3rem;">M E D E _ _ _ _ _ _ _ E</p>
     
-    <input type="text" id="userInput" placeholder="ENTER NAME...">
-    <button class="action-btn" onclick="checkAnswer()">VERIFY ANALYSIS</button>
+    <input type="text" id="userInput" placeholder="TYPE NAME...">
+    <br>
+    <button class="action-btn" onclick="checkAnswer()">VERIFY DATA</button>
 
-    <div id="win-zone" style="display:none; margin-top: 20px; color: #27ae60;">
-        <p>✅ <strong>Substance Identified. Medetomidine.</strong></p>
+    <div id="win-msg" style="display:none; margin-top:20px; color: #27ae60;">
+        <p>✅ <strong>Data Verified: Medetomidine.</strong></p>
         <p>Master Clue Word 1: <strong>VIGILANCE</strong></p>
-        <a href="room2.html" style="color: #2980b9; font-weight: bold; text-decoration: underline;">PROCEED TO ROOM 2 &rarr;</a>
+        <a href="room2.html" style="font-weight:bold; color: #2980b9; text-decoration: underline;">PROCEED TO ROOM 2 &rarr;</a>
     </div>
 </div>
 
 <script>
-    // These functions make the modals (pop-up boxes) work
     function openModal(id) {
-        event.stopPropagation(); // Prevents the coordinate script from running
         document.getElementById('overlay').style.display = 'block';
         if(id === 'real') document.getElementById('modal-real').style.display = 'block';
         if(id === 'decoy1') document.getElementById('modal-decoy1').style.display = 'block';
@@ -100,31 +90,4 @@
 
     function closeAll() {
         document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-        document.getElementById('overlay').style.display = 'none';
-    }
-
-    // This function checks the puzzle answer
-    function checkAnswer() {
-        const val = document.getElementById('userInput').value.toUpperCase().trim();
-        if(val === 'MEDETOMIDINE') {
-            document.getElementById('win-zone').style.display = 'block';
-        } else {
-            alert("Analysis failed. Refer to the 'Overdose Data' clue.");
-        }
-    }
-
-    // Toggle for positioning the boxes (remove before game goes live)
-    function toggleDebug() {
-        document.querySelectorAll('.hotspot').forEach(h => h.classList.toggle('dev-visible'));
-    }
-
-    // Coordinate Tracker (delete later)
-    function getCoordinates(event) {
-        const x = Math.round((event.clientX / window.innerWidth) * 100);
-        const y = Math.round((event.clientY / window.innerHeight) * 100);
-        console.log("TOP: " + y + "%, LEFT: " + x + "%");
-    }
-</script>
-
-</body>
-</html>
+        document.getElementById('overlay
