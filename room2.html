@@ -1,1 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room 2: The Outreach Hub</title>
+    <style>
+        * { box-sizing: border-box; }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #1a1a1a; font-family: sans-serif; }
 
+        .room-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('room2.png'); 
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* HOTSPOTS (Currently mapped to the middle until you get your numbers) */
+        .hotspot { position: absolute; cursor: pointer; z-index: 10; background: rgba(255, 255, 255, 0); }
+        
+        #main-target { top: 40%; left: 45%; width: 20%; height: 25%; } /* Target: Naloxone Kits */
+        #decoy-1 { top: 20%; left: 10%; width: 15%; height: 25%; }     /* Target: Coffee Mug */
+
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 450px; text-align: center; color: #333; }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
+        input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.2rem; text-transform: uppercase; text-align: center; }
+        button.action-btn { padding: 12px 25px; background: #d35400; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        
+        .mission-text { background: rgba(0,0,0,0.8); color: #f39c12; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #f39c12; font-family: monospace; max-width: 300px; z-index: 5; }
+    </style>
+</head>
+<body>
+
+<div class="room-container">
+    <div class="mission-text">
+        <strong>[FIELD_DATA_CONNECTED]</strong><br>
+        Search the outreach station for the 2026 Response Protocol.
+    </div>
+
+    <div id="main-target" class="hotspot" onclick="openModal('real')"></div>
+    <div id="decoy-1" class="hotspot" onclick="openModal('decoy1')"></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<div class="modal" id="modal-decoy1">
+    <h3>☕ Staff Items</h3>
+    <p>Personal items are here, but no medical data. Look for the actual response supplies.</p>
+    <button class="action-btn" onclick="closeAll()">KEEP LOOKING</button>
+</div>
+
+<div class="modal" id="modal-real">
+    <h2 style="color: #d35400;">🚨 2026 RESPONSE PROTOCOL</h2>
+    <p>In 2026, one kit of Naloxone is rarely enough for high-potency synthetics. If the individual doesn't respond in 2 minutes, don't wait for a doctor.</p>
+    <hr>
+    <p><strong>THE PROTOCOL:</strong> If the person remains unresponsive after the first dose, what is the mandatory next action?</p>
+    
+    <input type="text" id="userInput" placeholder="ENTER ACTION WORD...">
+    <br>
+    <button class="action-btn" onclick="checkAnswer()">ACTIVATE RESPONSE</button>
+
+    <div id="win-msg" style="display:none; margin-top:20px; color: #27ae60;">
+        <p>✅ <strong>ACTION CONFIRMED.</strong></p>
+        <p>Always stay with the person and **REPEAT** the dose every 2-3 minutes until help arrives.</p>
+        <p>Master Clue Word 2: <strong>RESPONSE</strong></p>
+        <a href="room3.html" style="font-weight:bold; color: #2980b9;">PROCEED TO ROOM 3 &rarr;</a>
+    </div>
+</div>
+
+<script>
+    function openModal(id) {
+        document.getElementById('overlay').style.display = 'block';
+        if(id === 'real') document.getElementById('modal-real').style.display = 'block';
+        if(id === 'decoy1') document.getElementById('modal-decoy1').style.display = 'block';
+    }
+
+    function closeAll() {
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        document.getElementById('overlay').style.display = 'none';
+    }
+
+    function checkAnswer() {
+        const val = document.getElementById('userInput').value.toUpperCase().trim();
+        // The password is REPEAT
+        if(val === 'REPEAT') {
+            document.getElementById('win-msg').style.display = 'block';
+        } else {
+            alert("Protocol Error. If the first dose fails, what must you do with the next dose?");
+        }
+    }
+</script>
+
+</body>
+</html>
