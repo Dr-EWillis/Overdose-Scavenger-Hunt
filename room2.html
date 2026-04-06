@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 2: The Outreach Hub</title>
+    <title>Room 2: Calibration Mode</title>
     <style>
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #1a1a1a; font-family: sans-serif; }
@@ -12,17 +12,32 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('room2.png'); 
+            background-image: url('room2.png'); /* Ensure this matches your filename! */
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
         }
 
-        /* HOTSPOTS (Currently mapped to the middle until you get your numbers) */
-        .hotspot { position: absolute; cursor: pointer; z-index: 10; background: rgba(255, 255, 255, 0); }
+        /* 🛠️ CALIBRATION BOXES (Visible for now) */
+        .hotspot { 
+            position: absolute; 
+            cursor: pointer; 
+            z-index: 10; 
+            background: rgba(255, 255, 0, 0.3); /* Faint yellow fill */
+            border: 2px dashed yellow;         /* Dashed yellow border */
+        }
         
-        #main-target { top: 40%; left: 45%; width: 20%; height: 25%; } /* Target: Naloxone Kits */
-        #decoy-1 { top: 20%; left: 10%; width: 15%; height: 25%; }     /* Target: Coffee Mug */
+        /* 📍 ADJUST THESE NUMBERS based on your clicks! */
+        #main-target { top: 40%; left: 45%; width: 15%; height: 25%; } /* Naloxone Kits */
+        #decoy-1 { top: 20%; left: 10%; width: 15%; height: 25%; }     /* Decoy 1 */
+        #decoy-2 { top: 60%; left: 75%; width: 15%; height: 25%; }     /* Decoy 2 */
+
+        /* GPS TRACKER UI */
+        #coord-display {
+            position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.9);
+            color: #00ff41; padding: 15px; border: 2px solid #00ff41;
+            font-family: monospace; z-index: 1000; pointer-events: none;
+        }
 
         /* MODALS */
         .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 450px; text-align: center; color: #333; }
@@ -33,7 +48,12 @@
         .mission-text { background: rgba(0,0,0,0.8); color: #f39c12; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #f39c12; font-family: monospace; max-width: 300px; z-index: 5; }
     </style>
 </head>
-<body>
+<body onclick="findCoords(event)">
+
+    <div id="coord-display">
+        <strong>ROOM 2 GPS</strong><br>
+        <span id="coord-output">TOP: -- | LEFT: --</span>
+    </div>
 
 <div class="room-container">
     <div class="mission-text">
@@ -43,21 +63,28 @@
 
     <div id="main-target" class="hotspot" onclick="openModal('real')"></div>
     <div id="decoy-1" class="hotspot" onclick="openModal('decoy1')"></div>
+    <div id="decoy-2" class="hotspot" onclick="openModal('decoy2')"></div>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
 <div class="modal" id="modal-decoy1">
-    <h3>☕ Staff Items</h3>
-    <p>Personal items are here, but no medical data. Look for the actual response supplies.</p>
+    <h3>🩹 First Aid Items</h3>
+    <p>Standard supplies. Good for minor injuries, but not for a high-potency synthetic event. Keep looking for the 2026 Response Brief.</p>
+    <button class="action-btn" onclick="closeAll()">KEEP LOOKING</button>
+</div>
+
+<div class="modal" id="modal-decoy2">
+    <h3>🔍 Observation</h3>
+    <p>Nothing useful here. The core protocol is likely located near the medical distribution supplies.</p>
     <button class="action-btn" onclick="closeAll()">KEEP LOOKING</button>
 </div>
 
 <div class="modal" id="modal-real">
     <h2 style="color: #d35400;">🚨 2026 RESPONSE PROTOCOL</h2>
-    <p>In 2026, one kit of Naloxone is rarely enough for high-potency synthetics. If the individual doesn't respond in 2 minutes, don't wait for a doctor.</p>
+    <p>One kit of Naloxone is rarely enough for Nitazenes. If the person doesn't respond in 2 minutes, the protocol is clear.</p>
     <hr>
-    <p><strong>THE PROTOCOL:</strong> If the person remains unresponsive after the first dose, what is the mandatory next action?</p>
+    <p><strong>MISSION:</strong> If the person remains unresponsive after the first dose, what is the mandatory next action?</p>
     
     <input type="text" id="userInput" placeholder="ENTER ACTION WORD...">
     <br>
@@ -65,17 +92,26 @@
 
     <div id="win-msg" style="display:none; margin-top:20px; color: #27ae60;">
         <p>✅ <strong>ACTION CONFIRMED.</strong></p>
-        <p>Always stay with the person and **REPEAT** the dose every 2-3 minutes until help arrives.</p>
         <p>Master Clue Word 2: <strong>RESPONSE</strong></p>
         <a href="room3.html" style="font-weight:bold; color: #2980b9;">PROCEED TO ROOM 3 &rarr;</a>
     </div>
 </div>
 
 <script>
+    // 🌍 COORDINATE TRACKER
+    function findCoords(event) {
+        var x = Math.round((event.clientX / window.innerWidth) * 100);
+        var y = Math.round((event.clientY / window.innerHeight) * 100);
+        document.getElementById('coord-output').innerHTML = "TOP: " + y + "% | LEFT: " + x + "%";
+    }
+
+    // 🎮 GAME LOGIC
     function openModal(id) {
+        event.stopPropagation(); // Stops the tracker from firing on top of the modal
         document.getElementById('overlay').style.display = 'block';
         if(id === 'real') document.getElementById('modal-real').style.display = 'block';
         if(id === 'decoy1') document.getElementById('modal-decoy1').style.display = 'block';
+        if(id === 'decoy2') document.getElementById('modal-decoy2').style.display = 'block';
     }
 
     function closeAll() {
@@ -85,11 +121,10 @@
 
     function checkAnswer() {
         const val = document.getElementById('userInput').value.toUpperCase().trim();
-        // The password is REPEAT
         if(val === 'REPEAT') {
             document.getElementById('win-msg').style.display = 'block';
         } else {
-            alert("Protocol Error. If the first dose fails, what must you do with the next dose?");
+            alert("Incorrect. Think about the next step when a dose fails.");
         }
     }
 </script>
