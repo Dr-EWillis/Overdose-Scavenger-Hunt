@@ -9,28 +9,27 @@
         
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: #000; /* Black background for mobile bars */
+            /* This makes the "bars" look like a glowing monitor screen */
+            background: radial-gradient(circle, #1a2a1a 0%, #000000 100%); 
             overflow: hidden;
             font-family: sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .room-container {
             position: relative;
+            /* The container fills the viewport */
             width: 100vw;
             height: 100vh;
+
             background-image: url('room1.png'); 
             background-position: center center;
             background-repeat: no-repeat;
             
-            /* DEFAULT (MOBILE): Maintain aspect ratio, no stretching */
+            /* PROPORTIONAL FIX: This keeps the image perfect on all screens */
             background-size: contain; 
-        }
-
-        /* 🖥️ DESKTOP OVERRIDE: Fill the entire page on larger screens */
-        @media (min-width: 1024px) {
-            .room-container {
-                background-size: 100% 100%; /* Forces the image to fill the browser corners */
-            }
         }
 
         /* INVISIBLE HOTSPOTS */
@@ -42,18 +41,16 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* Your coordinates remain 100% accurate in both modes */
-        #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; }   /* Tablet */
-        #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }    /* Microscope */
-        #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }    /* Bottles */
+        /* These stay perfectly anchored because they scale with the 'contain' logic */
+        #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; } 
+        #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }  
+        #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }  
 
-        /* MISSION UI: Anchored to the image area */
         .mission-text { 
-            background: rgba(0,0,0,0.8); color: #00ff41; padding: 12px; 
-            position: absolute; top: 2%; left: 2%; border-radius: 8px; 
+            background: rgba(0,0,0,0.8); color: #00ff41; padding: 15px; 
+            position: absolute; top: 20px; left: 20px; border-radius: 8px; 
             border: 1px solid #00ff41; font-family: monospace;
-            max-width: 250px; z-index: 5; pointer-events: none;
-            font-size: 0.9rem;
+            max-width: 280px; z-index: 5; pointer-events: none;
         }
 
         /* MODALS */
