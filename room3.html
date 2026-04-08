@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 3: The Warm Handoff</title>
+    <title>Room 3: The Handoff</title>
     <style>
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #1a1a1a; font-family: 'Segoe UI', sans-serif; }
@@ -12,7 +12,7 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('room3.jpg'); 
+            background-image: url('room3.png'); 
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -28,11 +28,11 @@
         }
         
         /* 📍 COORDINATES FOR ALL 5 ELEMENTS */
-        #main-target { top: 7%; left: 65%; width: 25%; height: 55%; }      /* Target: THE PERSON ON PHONE */
-        #decoy-board { top: 5%; left: 5%; width: 42%; height: 48%; }       /* Target: THE WHITEBOARD */
-        #decoy-pamphlets { top: 72%; left: 2%; width: 35%; height: 25%; }  /* Target: THE PAMPHLETS (Bottom Left) */
-        #decoy-1 { top: 58%; left: 63%; width: 18%; height: 15%; }         /* Target: Naloxone Pouch */
-        #decoy-2 { top: 68%; left: 45%; width: 15%; height: 25%; }         /* Target: Intake Form */
+        #main-target { top: 25%; left: 80%; width: 10%; height: 10%; }      /* Target: THE PERSON ON PHONE */
+        #decoy-board { top: 5%; left: 5%; width: 10%; height: 10%; }       /* Target: THE WHITEBOARD */
+        #decoy-pamphlets { top: 72%; left: 2%; width: 10%; height: 10%; }  /* Target: THE PAMPHLETS (Bottom Left) */
+        #decoy-1 { top: 58%; left: 63%; width: 10%; height: 10%; }         /* Target: Naloxone Pouch */
+        #decoy-2 { top: 68%; left: 45%; width: 10%; height: 10%; }         /* Target: Intake Form */
 
         /* GPS TRACKER UI */
         #coord-display {
@@ -74,25 +74,25 @@
 
 <div class="modal" id="modal-pamphlets">
     <h3>📚 Community Resources</h3>
-    <p>These pamphlets provide critical education on 2026 synthetic threats. Education is the first step toward <strong>Vigilance</strong>, but it is passive. Stability requires an active, live bridge. Look for the real-time connection.</p>
+    <p>These pamphlets provide critical education. Education is the first step toward <strong>Vigilance</strong>, but it is passive. Stability requires an active, live bridge. Look for the real-time connection.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-board">
     <h3>📋 System Infrastructure</h3>
-    <p>The flowchart is a vital plan, but a "Warm Handoff" isn't a diagram—it is a live, human action. Look for the person executing the link.</p>
+    <p>The flowchart is a vital plan, but not correct. </p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-decoy1">
     <h3>🚨 Emergency Supply</h3>
-    <p>Naloxone is the response. You are now in the stability phase. Find the handoff to a clinical provider.</p>
+    <p>Naloxone is the response. You are now in the stability phase.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-decoy2">
     <h3>📄 Intake Form</h3>
-    <p>Avoid the paperwork barriers. In 2026, we prioritize direct connection over administrative hurdles.</p>
+    <p>Avoid the paperwork barriers. In 2026, we prioritize connection over administrative hurdles.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
@@ -100,7 +100,7 @@
     <h2 style="color: #2980b9;">📞 THE WARM HANDOFF</h2>
     <p>This outreach worker is bypassing the old barriers by facilitating an immediate bridge to a virtual MOUD prescriber.</p>
     <hr>
-    <p><strong>MISSION:</strong> The power of the 2026 model is the ability to immediately ______ a patient in crisis with a live provider.</p>
+    <p><strong>MISSION:</strong> The warm-handoff supports our ability to immediately ______ a patient in crisis with a live provider.</p>
     
     <input type="text" id="userInput" placeholder="ENTER ACTION WORD...">
     <br>
