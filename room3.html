@@ -2,20 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Room 3: The Handoff</title>
     <style>
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #1a1a1a; font-family: 'Segoe UI', sans-serif; }
+        
+        html, body { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            /* Subtle blue-grey radial gradient to match the Room 3 aesthetic */
+            background: radial-gradient(circle, #1a232e 0%, #000000 100%); 
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
         .room-container {
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('room3.png'); /* Adjusted to .jpg based on your previous upload */
+            
+            /* Ensure this matches your actual filename (room3.jpg) */
+            background-image: url('room3.jpg'); 
             background-position: center center;
             background-repeat: no-repeat;
-            background-size: cover;
+            
+            /* PROPORTIONAL FIX: Prevents stretching and aligns with hotspots */
+            background-size: contain; 
         }
 
         /* INVISIBLE HOTSPOTS */
@@ -24,7 +38,8 @@
             cursor: pointer; 
             z-index: 10; 
             background: transparent; 
-            border: none;         
+            border: none;
+            -webkit-tap-highlight-color: transparent;         
         }
         
         /* Your Final Coordinates */
@@ -35,12 +50,22 @@
         #decoy-2 { top: 68%; left: 45%; width: 10%; height: 10%; } 
 
         /* MODALS & OVERLAY */
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 450px; text-align: center; color: #333; }
+        .modal { 
+            display: none; position: fixed; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); background: white; 
+            padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; 
+            z-index: 100; width: 90%; max-width: 450px; text-align: center; color: #333; 
+        }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
         input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.2rem; text-transform: uppercase; text-align: center; letter-spacing: 2px; }
         button.action-btn { padding: 12px 25px; background: #2980b9; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
-        .mission-text { background: rgba(0,0,0,0.85); color: #3498db; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #3498db; font-family: monospace; max-width: 320px; z-index: 5; }
+        .mission-text { 
+            background: rgba(0,0,0,0.85); color: #3498db; padding: 15px; 
+            position: absolute; top: 20px; left: 20px; border-radius: 10px; 
+            border: 1px solid #3498db; font-family: monospace; 
+            max-width: 320px; z-index: 5; pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -103,7 +128,6 @@
 
 <script>
     function openModal(id) {
-        // Prevents clicks from triggering other elements
         if (window.event) window.event.stopPropagation();
         
         document.getElementById('overlay').style.display = 'block';
