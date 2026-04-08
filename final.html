@@ -2,49 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FINAL DEBRIEF: System Activation</title>
     <style>
         * { box-sizing: border-box; }
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background-color: #000; font-family: 'Courier New', Courier, monospace; color: #00ff41; overflow: hidden; }
+        
+        /* 1. ALLOW SCROLLING: Essential when the cipher section expands the box */
+        body, html { 
+            margin: 0; padding: 0; min-height: 100%; width: 100%; 
+            background-color: #000; font-family: 'Courier New', Courier, monospace; 
+            color: #00ff41; overflow-y: auto; 
+        }
 
         .final-container {
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
             background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('final.png');
             background-size: cover;
             background-position: center;
+            background-attachment: fixed; /* Keeps background steady while scrolling */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 20px;
         }
 
         .terminal-box {
-            background: rgba(0, 20, 0, 0.9);
+            background: rgba(0, 20, 0, 0.95);
             border: 2px solid #00ff41;
-            padding: 40px;
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 0 30px rgba(0, 255, 65, 0.4);
             max-width: 600px;
-            width: 90%;
+            width: 100%;
+            margin: 20px 0;
+            transition: all 0.5s ease;
         }
 
-        h1 { font-size: 1.5rem; text-shadow: 0 0 10px #00ff41; margin-bottom: 20px; }
-        p { color: #fff; font-family: sans-serif; line-height: 1.6; }
+        h1 { font-size: 1.3rem; text-shadow: 0 0 10px #00ff41; margin-bottom: 20px; }
+        p { color: #fff; font-family: sans-serif; line-height: 1.5; font-size: 0.95rem; }
         
         .pillar-inputs { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 20px 0; }
-        input { background: #000; border: 1px solid #00ff41; color: #00ff41; padding: 12px; text-align: center; font-size: 1.1rem; text-transform: uppercase; border-radius: 5px; width: 100%; }
+        input { 
+            background: #000; border: 1px solid #00ff41; color: #00ff41; 
+            padding: 12px; text-align: center; font-size: 1.1rem; 
+            text-transform: uppercase; border-radius: 5px; width: 100%; 
+        }
         
-        button { background: #00ff41; color: #000; border: none; padding: 15px 30px; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 10px; font-size: 1rem; }
-        button:hover { background: #fff; }
+        button { 
+            background: #00ff41; color: #000; border: none; 
+            padding: 15px 30px; font-weight: bold; cursor: pointer; 
+            border-radius: 5px; margin-top: 10px; font-size: 1rem; 
+            transition: 0.3s;
+        }
+        button:hover { background: #fff; box-shadow: 0 0 15px #fff; }
 
         /* CIPHER SECTION (HIDDEN BY DEFAULT) */
-        #cipher-section { display: none; border-top: 2px dashed #00ff41; margin-top: 30px; padding-top: 20px; }
-        .cipher-text { font-size: 2rem; letter-spacing: 8px; font-weight: bold; color: #ff3e3e; margin: 20px 0; }
+        #cipher-section { display: none; border-top: 2px dashed #00ff41; margin-top: 30px; padding-top: 20px; animation: fadeIn 1s; }
+        
+        .cipher-text { 
+            font-size: 1.8rem; letter-spacing: 8px; font-weight: bold; 
+            color: #ff3e3e; margin: 20px 0; word-break: break-all;
+            text-shadow: 0 0 5px #ff3e3e;
+        }
         
         #victory-screen { display: none; color: #fff; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* 2. MOBILE SPECIFIC TWEAKS */
+        @media (max-width: 480px) {
+            .terminal-box { padding: 20px; }
+            h1 { font-size: 1.1rem; }
+            p { font-size: 0.85rem; }
+            .cipher-text { font-size: 1.3rem; letter-spacing: 4px; }
+            #victory-screen h1 { font-size: 2rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -64,8 +99,7 @@
 
         <div id="cipher-section">
             <h2 style="color: #ff3e3e;">[SYSTEM_ENCRYPTED]</h2>
-            <p>The Master Key is scrambled. Shift the sequence <strong>BACKWARD</strong> in the alphabet by the total number of rooms you have conquered.</p>
-            
+            <p>The Master Key is scrambled. Shift the sequence <strong>BACKWARD</strong> in the alphabet by the total number of rooms you have conquered (3).</p>
             
             <div class="cipher-text">UHVLOLHQFH</div>
             
@@ -73,50 +107,3 @@
             <br>
             <button onclick="verifyFinal()">ACTIVATE PROTOCOL</button>
         </div>
-    </div>
-
-    <div class="terminal-box" id="victory-screen">
-        <h1 style="font-size: 3rem;"> MISSION ACCOMPLISHED! </h1>
-        <hr border="1" color="#00ff41">
-        <p style="font-size: 1.2rem; margin-top: 20px;">
-            You have successfully integrated <strong>Vigilance</strong>, <strong>Response</strong>, and <strong>Connection</strong> to build a 2026 system of <strong>Resilience</strong>.
-        </p>
-        <p>The 2026 Protocol is now ACTIVE.</p>
-        <br>
-        <div style="padding: 20px; border: 1px solid #00ff41; background: rgba(0,255,65,0.1);">
-            <small>COMPLETION CODE:</small><br>
-            <strong style="font-size: 1.5rem;">STRATEGY-ADAPT-2026</strong>
-        </div>
-    </div>
-</div>
-
-<script>
-    function verifyPillars() {
-        const p1 = document.getElementById('p1').value.toUpperCase().trim();
-        const p2 = document.getElementById('p2').value.toUpperCase().trim();
-        const p3 = document.getElementById('p3').value.toUpperCase().trim();
-
-        if (p1 === 'VIGILANCE' && p2 === 'RESPONSE' && p3 === 'CONNECTION') {
-            document.getElementById('cipher-section').style.display = 'block';
-            alert("PILLARS VERIFIED. ENCRYPTION DETECTED.");
-        } else {
-            alert("ACCESS DENIED: Invalid Pillar sequence. Check your records from Rooms 1, 2, and 3.");
-        }
-    }
-
-    function verifyFinal() {
-        const key = document.getElementById('masterKey').value.toUpperCase().trim();
-        
-        // Final word is RESILIENCE
-        if (key === 'RESILIENCE') {
-            document.getElementById('main-terminal').style.display = 'none';
-            document.getElementById('victory-screen').style.display = 'block';
-            // Play a success sound effect or flash lights if you're fancy!
-        } else {
-            alert("DECRYPTION FAILED: The Master Key is incorrect. Remember the Shift-3 rule.");
-        }
-    }
-</script>
-
-</body>
-</html>
