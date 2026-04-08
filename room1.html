@@ -2,48 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Room 1: The Lab</title>
     <style>
-        /* 1. ENSURE THE CANVAS EXISTS */
         * { box-sizing: border-box; }
+        
+        /* 1. DARK STAGE: The background for the "bars" around the game */
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: #1a1a1a; /* Dark grey so we know the page loaded */
+            background-color: #000; /* True black for a cinematic feel */
             overflow: hidden;
             font-family: sans-serif;
-        }
-
-        .room-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            
-            /* CHANGE THIS TO .png IF YOUR FILE IS A PNG */
-            background-image: url('room1.png'); 
-            
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* 2. INVISIBLE HOTSPOTS (Using your exact numbers) */
-        .hotspot { position: absolute; cursor: pointer; z-index: 10; background: rgba(255, 255, 255, 0); }
+        /* 2. THE PRO FIX: 16:9 ASPECT RATIO BOX */
+        .room-container {
+            position: relative;
+            /* This math ensures the box stays 16:9 */
+            width: 100vw;
+            height: 56.25vw; 
+            max-height: 100vh;
+            max-width: 177.78vh; 
+
+            background-image: url('room1.png'); 
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: contain; /* Ensures the whole image is always visible */
+            
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* 3. INVISIBLE HOTSPOTS (Pinned to the aspect-ratio box) */
+        .hotspot { 
+            position: absolute; 
+            cursor: pointer; 
+            z-index: 10; 
+            background: rgba(255, 255, 255, 0); 
+            -webkit-tap-highlight-color: transparent; /* Removes the grey flash on mobile tap */
+        }
         
         #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; }   /* Tablet */
         #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }    /* Microscope */
         #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }    /* Bottles */
 
-        /* 3. POP-UPS & OVERLAYS */
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 400px; text-align: center; color: #333; }
+        /* 4. POP-UPS & OVERLAYS */
+        .modal { 
+            display: none; position: fixed; top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); background: white; 
+            padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; 
+            z-index: 100; width: 90%; max-width: 400px; text-align: center; color: #333; 
+        }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
         input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; text-align: center; }
         button.action-btn { padding: 12px 25px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
-        .mission-text { background: rgba(0,0,0,0.8); color: #00ff41; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #00ff41; font-family: monospace; max-width: 300px; z-index: 5; }
+        .mission-text { 
+            background: rgba(0,0,0,0.8); color: #00ff41; padding: 12px; 
+            position: absolute; top: 10px; left: 10px; border-radius: 8px; 
+            border: 1px solid #00ff41; font-family: monospace; font-size: 0.8rem;
+            max-width: 200px; z-index: 5; pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -51,7 +72,7 @@
 <div class="room-container">
     <div class="mission-text">
         <strong>[SYSTEM_READY]</strong><br>
-        Analyze the workstation. Search the image for clues in the toxicology lab.
+        Analyze the workstation.
     </div>
 
     <div id="main-clue" class="hotspot" onclick="openModal('real')"></div>
@@ -63,23 +84,22 @@
 
 <div class="modal" id="modal-decoy1">
     <h3>🔬 Microscope Check</h3>
-    <p>Physical analysis takes too long. We need up-to-date information to move forward.</p>
+    <p>Physical analysis takes too long. We need digital intel.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-decoy2">
     <h3>🧪 Chemical Scan</h3>
-    <p>These are standard control solutions. They don't contain the 2026 threat name.</p>
+    <p>Standard control solutions. No threat detected here.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-real">
     <h2 style="color: #c0392b;">📂 2026 DATA BRIEF</h2>
-    <p>A new veterinary sedative is 100x stronger than Xylazine and ignores Naloxone.</p>
+    <p>Identify the veterinary sedative 100x stronger than Xylazine.</p>
     <hr>
-    <p><strong>MISSION: Identify the substance.</strong></p>
-    <p style="font-weight: bold; letter-spacing: 5px; font-size: 1.3rem;">M _ _ _ _ _ _ _ _ _ _ E</p>
-    <input type="text" id="userInput" placeholder="TYPE NAME...">
+    <p style="font-weight: bold; letter-spacing: 2px; font-size: 1.1rem;">M _ _ _ _ _ _ _ _ _ _ E</p>
+    <input type="text" id="userInput" placeholder="ENTER NAME...">
     <br>
     <button class="action-btn" onclick="checkAnswer()">VERIFY DATA</button>
 
@@ -108,7 +128,7 @@
         if(val === 'MEDETOMIDINE') {
             document.getElementById('win-msg').style.display = 'block';
         } else {
-            alert("Identification failed. Substance name not recognized.");
+            alert("Identification failed.");
         }
     }
 </script>
