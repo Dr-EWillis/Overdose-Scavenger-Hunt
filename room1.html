@@ -7,48 +7,56 @@
     <style>
         * { box-sizing: border-box; }
         
-        /* 1. DARK STAGE: The background for the "bars" around the game */
         html, body { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
-            background-color: #000; /* True black for a cinematic feel */
+            background-color: #000; /* Black background for mobile bars */
             overflow: hidden;
             font-family: sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        /* 2. THE PRO FIX: 16:9 ASPECT RATIO BOX */
         .room-container {
             position: relative;
-            /* This math ensures the box stays 16:9 */
             width: 100vw;
-            height: 56.25vw; 
-            max-height: 100vh;
-            max-width: 177.78vh; 
-
+            height: 100vh;
             background-image: url('room1.png'); 
             background-position: center center;
             background-repeat: no-repeat;
-            background-size: contain; /* Ensures the whole image is always visible */
             
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            /* DEFAULT (MOBILE): Maintain aspect ratio, no stretching */
+            background-size: contain; 
         }
 
-        /* 3. INVISIBLE HOTSPOTS (Pinned to the aspect-ratio box) */
+        /* 🖥️ DESKTOP OVERRIDE: Fill the entire page on larger screens */
+        @media (min-width: 1024px) {
+            .room-container {
+                background-size: 100% 100%; /* Forces the image to fill the browser corners */
+            }
+        }
+
+        /* INVISIBLE HOTSPOTS */
         .hotspot { 
             position: absolute; 
             cursor: pointer; 
             z-index: 10; 
-            background: rgba(255, 255, 255, 0); 
-            -webkit-tap-highlight-color: transparent; /* Removes the grey flash on mobile tap */
+            background: transparent; 
+            -webkit-tap-highlight-color: transparent;
         }
         
+        /* Your coordinates remain 100% accurate in both modes */
         #main-clue { top: 68%; left: 8%; width: 15%; height: 20%; }   /* Tablet */
         #decoy-1 { top: 31%; left: 50%; width: 15%; height: 20%; }    /* Microscope */
         #decoy-2 { top: 80%; left: 50%; width: 10%; height: 20%; }    /* Bottles */
 
-        /* 4. POP-UPS & OVERLAYS */
+        /* MISSION UI: Anchored to the image area */
+        .mission-text { 
+            background: rgba(0,0,0,0.8); color: #00ff41; padding: 12px; 
+            position: absolute; top: 2%; left: 2%; border-radius: 8px; 
+            border: 1px solid #00ff41; font-family: monospace;
+            max-width: 250px; z-index: 5; pointer-events: none;
+            font-size: 0.9rem;
+        }
+
+        /* MODALS */
         .modal { 
             display: none; position: fixed; top: 50%; left: 50%; 
             transform: translate(-50%, -50%); background: white; 
@@ -58,13 +66,6 @@
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
         input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.1rem; text-transform: uppercase; text-align: center; }
         button.action-btn { padding: 12px 25px; background: #2c3e50; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        .mission-text { 
-            background: rgba(0,0,0,0.8); color: #00ff41; padding: 12px; 
-            position: absolute; top: 10px; left: 10px; border-radius: 8px; 
-            border: 1px solid #00ff41; font-family: monospace; font-size: 0.8rem;
-            max-width: 200px; z-index: 5; pointer-events: none;
-        }
     </style>
 </head>
 <body>
