@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 2: Calibration Mode</title>
+    <title>Room 2: Outreach Hub</title>
     <style>
         * { box-sizing: border-box; }
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #1a1a1a; font-family: sans-serif; }
@@ -12,32 +12,24 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('room2.png'); /* Ensure this matches your filename! */
+            background-image: url('room2.png'); 
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
         }
 
-        /* 🛠️ CALIBRATION BOXES (Visible for now) */
+        /* INVISIBLE HOTSPOTS */
         .hotspot { 
             position: absolute; 
             cursor: pointer; 
             z-index: 10; 
-            background: rgba(255, 255, 0, 0.3); /* Faint yellow fill */
-            border: 2px dashed yellow;         /* Dashed yellow border */
+            background: rgba(255, 255, 255, 0); /* Completely transparent */
         }
         
-        /* 📍 ADJUST THESE NUMBERS based on your clicks! */
-        #main-target { top: 40%; left: 65%; width: 10%; height: 15%; } /* Naloxone Kits */
-        #decoy-1 { top: 10%; left: 10%; width: 10%; height: 15%; }     /* Decoy 1 */
-        #decoy-2 { top: 90%; left: 61%; width: 10%; height: 15%; }     /* Decoy 2 */
-
-        /* GPS TRACKER UI */
-        #coord-display {
-            position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.9);
-            color: #00ff41; padding: 15px; border: 2px solid #00ff41;
-            font-family: monospace; z-index: 1000; pointer-events: none;
-        }
+        /* Your calibrated coordinates */
+        #main-target { top: 40%; left: 65%; width: 10%; height: 15%; } 
+        #decoy-1 { top: 10%; left: 10%; width: 10%; height: 15%; }     
+        #decoy-2 { top: 90%; left: 61%; width: 10%; height: 15%; }     
 
         /* MODALS */
         .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 450px; text-align: center; color: #333; }
@@ -48,12 +40,7 @@
         .mission-text { background: rgba(0,0,0,0.8); color: #f39c12; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #f39c12; font-family: monospace; max-width: 300px; z-index: 5; }
     </style>
 </head>
-<body onclick="findCoords(event)">
-
-    <div id="coord-display">
-        <strong>ROOM 2 GPS</strong><br>
-        <span id="coord-output">TOP: -- | LEFT: --</span>
-    </div>
+<body>
 
 <div class="room-container">
     <div class="mission-text">
@@ -98,16 +85,7 @@
 </div>
 
 <script>
-    // 🌍 COORDINATE TRACKER
-    function findCoords(event) {
-        var x = Math.round((event.clientX / window.innerWidth) * 100);
-        var y = Math.round((event.clientY / window.innerHeight) * 100);
-        document.getElementById('coord-output').innerHTML = "TOP: " + y + "% | LEFT: " + x + "%";
-    }
-
-    // 🎮 GAME LOGIC
     function openModal(id) {
-        event.stopPropagation(); // Stops the tracker from firing on top of the modal
         document.getElementById('overlay').style.display = 'block';
         if(id === 'real') document.getElementById('modal-real').style.display = 'block';
         if(id === 'decoy1') document.getElementById('modal-decoy1').style.display = 'block';
