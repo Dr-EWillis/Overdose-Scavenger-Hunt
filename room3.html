@@ -12,7 +12,7 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('room3.png'); 
+            background-image: url('room3.jpg'); 
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -27,10 +27,12 @@
             border: 2px dashed yellow;         
         }
         
-        /* 📍 INITIAL COORDINATES for your Room 3 image */
-        #main-target { top: 19%; left: 77%; width: 10%; height: 10%; } /* Target: The Warm Handoff */
-        #decoy-1 { top: 58%; left: 63%; width: 10%; height: 10%; }    /* Target: The Naloxone Pouch */
-        #decoy-2 { top: 68%; left: 45%; width: 10%; height: 10%; }    /* Target: Client Intake Form */
+        /* 📍 COORDINATES FOR ALL 5 ELEMENTS */
+        #main-target { top: 7%; left: 65%; width: 25%; height: 55%; }      /* Target: THE PERSON ON PHONE */
+        #decoy-board { top: 5%; left: 5%; width: 42%; height: 48%; }       /* Target: THE WHITEBOARD */
+        #decoy-pamphlets { top: 72%; left: 2%; width: 35%; height: 25%; }  /* Target: THE PAMPHLETS (Bottom Left) */
+        #decoy-1 { top: 58%; left: 63%; width: 18%; height: 15%; }         /* Target: Naloxone Pouch */
+        #decoy-2 { top: 68%; left: 45%; width: 15%; height: 25%; }         /* Target: Intake Form */
 
         /* GPS TRACKER UI */
         #coord-display {
@@ -58,33 +60,47 @@
 <div class="room-container">
     <div class="mission-text">
         <strong>[STABILITY_PHASE]</strong><br>
-        The emergency is over. Now, analyze the whiteboard to find the final link in the 2026 Continuum of Care.
+        Find the <strong>active link</strong> in the 2026 Continuum of Care.
     </div>
 
     <div id="main-target" class="hotspot" onclick="openModal('real')"></div>
+    <div id="decoy-board" class="hotspot" onclick="openModal('board')"></div>
+    <div id="decoy-pamphlets" class="hotspot" onclick="openModal('pamphlets')"></div>
     <div id="decoy-1" class="hotspot" onclick="openModal('decoy1')"></div>
     <div id="decoy-2" class="hotspot" onclick="openModal('decoy2')"></div>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
+<div class="modal" id="modal-pamphlets">
+    <h3>📚 Community Resources</h3>
+    <p>These pamphlets provide critical education on 2026 synthetic threats. Education is the first step toward <strong>Vigilance</strong>, but it is passive. Stability requires an active, live bridge. Look for the real-time connection.</p>
+    <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
+</div>
+
+<div class="modal" id="modal-board">
+    <h3>📋 System Infrastructure</h3>
+    <p>The flowchart is a vital plan, but a "Warm Handoff" isn't a diagram—it is a live, human action. Look for the person executing the link.</p>
+    <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
+</div>
+
 <div class="modal" id="modal-decoy1">
     <h3>🚨 Emergency Supply</h3>
-    <p>You already mastered the response phase in Room 2. </p>
+    <p>Naloxone is the response. You are now in the stability phase. Find the handoff to a clinical provider.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-decoy2">
-    <h3>📄 Client Intake Paperwork</h3>
-    <p>The old system was buried in paper barriers. In 2026, we prioritize <strong>immediate connection</strong> over bureaucratic hurdles. Focus on the handoff protocol.</p>
+    <h3>📄 Intake Form</h3>
+    <p>Avoid the paperwork barriers. In 2026, we prioritize direct connection over administrative hurdles.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
 <div class="modal" id="modal-real">
-    <h2 style="color: #2980b9;">📋 CONTINUUM OF CARE 2026</h2>
-    <p>Stability is a process. After the ED discharge and peer contact, the most critical step is the <strong>'Warm Handoff to MOUD Prescriber.'</strong></p>
+    <h2 style="color: #2980b9;">📞 THE WARM HANDOFF</h2>
+    <p>This outreach worker is bypassing the old barriers by facilitating an immediate bridge to a virtual MOUD prescriber.</p>
     <hr>
-    <p><strong>FINAL MISSION:</strong> In the 2026 model, our goal isn't just to reverse an overdose. It is to immediately ______ a patient to long-term clinical care via low-barrier telehealth.</p>
+    <p><strong>MISSION:</strong> The power of the 2026 model is the ability to immediately ______ a patient in crisis with a live provider.</p>
     
     <input type="text" id="userInput" placeholder="ENTER ACTION WORD...">
     <br>
@@ -108,6 +124,8 @@
         event.stopPropagation();
         document.getElementById('overlay').style.display = 'block';
         if(id === 'real') document.getElementById('modal-real').style.display = 'block';
+        if(id === 'board') document.getElementById('modal-board').style.display = 'block';
+        if(id === 'pamphlets') document.getElementById('modal-pamphlets').style.display = 'block';
         if(id === 'decoy1') document.getElementById('modal-decoy1').style.display = 'block';
         if(id === 'decoy2') document.getElementById('modal-decoy2').style.display = 'block';
     }
@@ -119,11 +137,10 @@
 
     function checkAnswer() {
         const val = document.getElementById('userInput').value.toUpperCase().trim();
-        // The password remains CONNECT
         if(val === 'CONNECT') {
             document.getElementById('win-msg').style.display = 'block';
         } else {
-            alert("Connection Error. The mission is to [Action Word] the patient to care.");
+            alert("Connection Error. How do we link the patient to the provider?");
         }
     }
 </script>
