@@ -12,36 +12,29 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            background-image: url('room3.png'); 
+            background-image: url('room3.png'); /* Adjusted to .jpg based on your previous upload */
             background-position: center center;
             background-repeat: no-repeat;
             background-size: cover;
         }
 
-        /* 🛠️ CALIBRATION BOXES (Visible for setup) */
+        /* INVISIBLE HOTSPOTS */
         .hotspot { 
             position: absolute; 
             cursor: pointer; 
             z-index: 10; 
-            background: rgba(255, 255, 0, 0.2); 
-            border: 2px dashed yellow;         
+            background: transparent; 
+            border: none;         
         }
         
-        /* 📍 COORDINATES FOR ALL 5 ELEMENTS */
-        #main-target { top: 25%; left: 80%; width: 10%; height: 10%; }      /* Target: THE PERSON ON PHONE */
-        #decoy-board { top: 24%; left: 28%; width: 10%; height: 10%; }       /* Target: THE WHITEBOARD */
-        #decoy-pamphlets { top: 87%; left: 19%; width: 10%; height: 10%; }  /* Target: THE PAMPHLETS (Bottom Left) */
-        #decoy-1 { top: 58%; left: 63%; width: 10%; height: 10%; }         /* Target: Naloxone Pouch */
-        #decoy-2 { top: 68%; left: 45%; width: 10%; height: 10%; }         /* Target: Intake Form */
+        /* Your Final Coordinates */
+        #main-target { top: 25%; left: 80%; width: 10%; height: 10%; } 
+        #decoy-board { top: 24%; left: 28%; width: 10%; height: 10%; } 
+        #decoy-pamphlets { top: 87%; left: 19%; width: 10%; height: 10%; } 
+        #decoy-1 { top: 58%; left: 63%; width: 10%; height: 10%; } 
+        #decoy-2 { top: 68%; left: 45%; width: 10%; height: 10%; } 
 
-        /* GPS TRACKER UI */
-        #coord-display {
-            position: fixed; top: 10px; right: 10px; background: rgba(0,0,0,0.9);
-            color: #00ff41; padding: 15px; border: 2px solid #00ff41;
-            font-family: monospace; z-index: 1000; pointer-events: none;
-        }
-
-        /* MODALS */
+        /* MODALS & OVERLAY */
         .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 0 50px #000; z-index: 100; max-width: 450px; text-align: center; color: #333; }
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 90; }
         input { padding: 12px; width: 90%; border: 2px solid #333; border-radius: 8px; margin: 15px 0; font-size: 1.2rem; text-transform: uppercase; text-align: center; letter-spacing: 2px; }
@@ -50,12 +43,7 @@
         .mission-text { background: rgba(0,0,0,0.85); color: #3498db; padding: 15px; position: absolute; top: 20px; left: 20px; border-radius: 10px; border: 1px solid #3498db; font-family: monospace; max-width: 320px; z-index: 5; }
     </style>
 </head>
-<body onclick="findCoords(event)">
-
-    <div id="coord-display">
-        <strong>ROOM 3 GPS</strong><br>
-        <span id="coord-output">TOP: -- | LEFT: --</span>
-    </div>
+<body>
 
 <div class="room-container">
     <div class="mission-text">
@@ -114,14 +102,10 @@
 </div>
 
 <script>
-    function findCoords(event) {
-        var x = Math.round((event.clientX / window.innerWidth) * 100);
-        var y = Math.round((event.clientY / window.innerHeight) * 100);
-        document.getElementById('coord-output').innerHTML = "TOP: " + y + "% | LEFT: " + x + "%";
-    }
-
     function openModal(id) {
-        event.stopPropagation();
+        // Prevents clicks from triggering other elements
+        if (window.event) window.event.stopPropagation();
+        
         document.getElementById('overlay').style.display = 'block';
         if(id === 'real') document.getElementById('modal-real').style.display = 'block';
         if(id === 'board') document.getElementById('modal-board').style.display = 'block';
