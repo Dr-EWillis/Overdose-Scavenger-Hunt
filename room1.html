@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Room 1: The Lab</title>
+    <title>Sector 1: The Lab</title>
     <style>
         * { box-sizing: border-box; }
         
@@ -69,8 +69,8 @@
 
 <div class="room-container">
     <div class="mission-text">
-        <strong>[SYSTEM_READY]</strong><br>
-        Analyze the workstation.
+        <strong>[THREAT_DETECTION_ACTIVE]</strong><br>
+        An unidentified synthetic is bypassing standard protocols. Your team has been deployed to the Toxicology Lab to secure the first Strategic Pillar of the 2026 Protocol. Investigate the terminal to identify the agent. Once the substance is verified, the system will reveal Pillar 1. Log it immediately—it is required for the final activation.
     </div>
 
     <div id="main-clue" class="hotspot" onclick="openModal('real')"></div>
@@ -82,7 +82,7 @@
 
 <div class="modal" id="modal-decoy1">
     <h3>🔬 Microscope Check</h3>
-    <p>Physical analysis takes too long. We need digital intel.</p>
+    <p>Physical analysis takes too long. We need quicker intel.</p>
     <button class="action-btn" onclick="closeAll()">KEEP SEARCHING</button>
 </div>
 
@@ -94,7 +94,7 @@
 
 <div class="modal" id="modal-real">
     <h2 style="color: #c0392b;">📂 2026 DATA BRIEF</h2>
-    <p>Identify the veterinary sedative 100x stronger than Xylazine.</p>
+    <p>Identify the veterinary sedative that is 100x stronger than Xylazine.</p>
     <hr>
     <p style="font-weight: bold; letter-spacing: 2px; font-size: 1.1rem;">M _ _ _ _ _ _ _ _ _ _ E</p>
     <input type="text" id="userInput" placeholder="ENTER NAME...">
