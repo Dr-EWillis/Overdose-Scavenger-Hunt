@@ -1,26 +1,101 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 Overdose Escape Room </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 Overdose Escape Room: Mission Start</title>
     <style>
-        body { font-family: 'Courier New', Courier, monospace; background: #0a0a0a; color: #00ff41; text-align: center; padding: 50px; line-height: 1.6; }
-        .container { border: 2px solid #00ff41; padding: 40px; max-width: 700px; margin: auto; background: rgba(0,0,0,0.9); box-shadow: 0 0 20px #00ff41; }
-        h1 { letter-spacing: 5px; border-bottom: 1px solid #00ff41; padding-bottom: 10px; }
-        .btn { background: #00ff41; color: black; padding: 18px 40px; text-decoration: none; font-weight: bold; border-radius: 4px; display: inline-block; margin-top: 30px; font-size: 1.2rem; }
-        .btn:hover { background: #fff; color: #000; box-shadow: 0 0 15px #fff; }
+        * { box-sizing: border-box; }
+        
+        body, html { 
+            margin: 0; padding: 0; min-height: 100%; width: 100%; 
+            background-color: #000; font-family: 'Segoe UI', sans-serif; 
+            color: #fff; overflow-y: auto; 
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .start-container {
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px;
+            text-align: center; /* Keeps the Header and Button centered */
+        }
+
+        .briefing-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00ff41; /* Strategic accent line */
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+            /* 🛠️ THIS IS THE FIX: Left alignment for the content */
+            text-align: left; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h1 { color: #00ff41; font-family: monospace; letter-spacing: 2px; }
+        h2 { color: #00ff41; font-size: 1.2rem; margin-top: 25px; border-bottom: 1px solid rgba(0,255,65,0.3); padding-bottom: 5px; }
+        
+        p, li { line-height: 1.6; color: #ddd; font-size: 1rem; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 10px; }
+
+        .role-tag {
+            font-weight: bold;
+            color: #00ff41;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        button.start-btn {
+            background: #00ff41;
+            color: #000;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        button.start-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 20px #fff;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>⚠️ MISSION BRIEF: THE ACTIVATION</h1>
-        <p>The overdose landscape has shifted. We are no longer just fighting opioids. We are fighting a complex polysubstance crisis involving high-potency synthetic sedatives and undetected analogues. Success in the 2026 landscape is built on three Strategic Pillars. These are the foundational concepts support our public health framework. Without them, the system lacks the stability to function.</p>
-        <p><strong>YOUR OBJECTIVE:</strong> Navigate three virtual environments to identify emerging threats and practice shifts. In each room, you must find the correct clue and solve a puzzle to uncover a <strong>Master Clue Word</strong>.</p>
-        <p>Combine all three words at the end to unlock the final protocol.</p>
-        <hr style="border-color: #00ff41;">
-        <p><em>Recommendation: Assign one "Navigator" to share their screen in the breakout room.</em></p>
-        <a href="room1.html" class="btn">INITIALIZE SYSTEM</a>
+
+<div class="start-container">
+    <h1>MISSION BRIEFING: THE ACTIVATION</h1>
+    <p>OBJECTIVE: Identify emerging threats and trends. Implement 2026 operational shifts.</p>
+
+    <div class="briefing-box">
+        <h2>🏛️ The Strategic Context</h2>
+        <p>The overdose landscape has shifted. We are no longer just fighting opioids. We are fighting a complex polysubstance crisis involving high-potentcy synthetic sedatives and undetected analogues. Success in the 2026 landscape is built on three <strong>Strategic Pillars</strong>. These are the foundational concepts that support our  public health framework. Without all three, the system lacks the stability to function.</p>
+
+        <h2>🎮 How to Play</h2>
+        <ul>
+            <li><strong>Search the Rooms:</strong> You will enter three distinct environments (The Lab, The Hub, and The Operations Center).</li>
+            <li><strong>Extract the Pillars:</strong> Search for clues and solve the puzzle in each room (one word answers) to reveal a <strong>Master Clue Word</strong> (Strategic Pillar).</li>
+            <li><strong>The Final Decryption:</strong> You will need all three Pillars in the final room to unlock the Master Encryption and activate the Protocol.</li>
+        </ul>
+
+        <h2>👥 Assigned Roles</h2>
+        <p>Designate these roles within your group before beginning:</p>
+        
+        <p><span class="role-tag">The Navigator</span>
+        Shares their screen and "drives" the mission, exploring the rooms and clicking clues.</p>
+
+        <p><span class="role-tag">The Cluemaster</span>
+        Maintains the <strong>Pillar Log</strong>. They must write down each Master Clue Word as it is revealed. If the Cluemaster loses a Pillar, the mission will fail.</p>
     </div>
+
+    <button class="start-btn" onclick="location.href='room1.html'">Begin Mission</button>
+</div>
+
 </body>
 </html>
